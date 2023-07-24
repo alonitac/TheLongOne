@@ -452,7 +452,7 @@ openssl smime -encrypt -aes-256-cbc -in <file-contains-the-generated-master-key>
 ```
 
 When you are ready to send the encrypted master-key to the server, `curl` again an HTTP POST request to the server endpoint `/keyexchange`, with the following body:
-```
+```json lines
 POST /keyexchange
 {
     "sessionID": "'$SESSION_ID'",

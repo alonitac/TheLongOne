@@ -1,6 +1,6 @@
 # Bash, Networking, Security and Virtualization Exercise
 
-## Build VPC in AWS (Amazon Web Services)
+## Build a virtual network in AWS (Amazon Web Services)
 
 AWS VPC (Virtual Private Cloud) is a service that allows users to create a logically isolated virtual network within the AWS cloud infrastructure. 
 Users can define their own IP address range, subnets, and network gateways, and configure security rules to control access to their resources.
@@ -119,7 +119,7 @@ Your created subnet has this attribute set to false. We would like to enable thi
 Amazon EC2 (Elastic Compute Cloud) is a web service that provides resizable compute capacity in the cloud. 
 It allows users to create and manage virtual machines, commonly referred to as "instances", which can be launched in a matter of minutes and configured with custom hardware, network settings, and operating systems.
 
-![](../.img/stop.gif)
+![](.img/stop.gif)
 
 1. Open the Amazon EC2 console at [https://console\.aws\.amazon\.com/ec2/](https://console.aws.amazon.com/ec2/).
 
@@ -131,7 +131,7 @@ It allows users to create and manage virtual machines, commonly referred to as "
 
    1. Choose **Quick Start**, and then choose **Ubuntu**\. This is the operating system \(OS\) for your instance\.
    
-5. Under **Instance type**, from the **Instance type** list, you can select the hardware configuration for your instance\. Choose the `t2.micro` instance type, which is selected by default. In Regions where `t2.micro` is unavailable, you can use a `t3.micro` instance.
+5. Under **Instance type**, from the **Instance type** list, you can select the hardware configuration for your instance\. Choose the `t2.nano` instance type, which is selected by default. In Regions where `t2.nano` is unavailable, you can use a `t3.nano` instance.
 
 6. Under **Key pair \(login\)**, choose **create new key pair** the key pair that you created when getting set up\.
 
@@ -185,7 +185,7 @@ ssh -i "</path/key-pair-name.pem>" ubuntu@<instance-public-dns-name-or-ip>
 
 Extend your VPC according to the below architecture: 
 
-![](../.img/vpc1.png)
+![](.img/vpc1.png)
 
 **Note:** No need to create **NAT gateway** in any way you choose to build the above VPC architecture.   
 
@@ -196,8 +196,6 @@ Use the public instance to connect to the private instance.
 Once you're in the private instance, try to access the internet and make sure you don't have access.
 
 ## SSH bastion host
-
-Before you answer the below two questions, please read [the tutorials about the SSH protocol](../tutorials/20_networking_ssh.md). 
 
 SSH jump host (also known as SSH **bastion** host or SSH gateway) is a special type of server that allows users to access other servers in a private network through it. 
 It acts as an intermediary host between the client and the target server. 
@@ -237,8 +235,12 @@ some-file-in-private-ec2.txt
 **Case 4** - bad usage
 
 ```console
-myuser@hostname:~$ ./bastion_connect.sh
+myuser@hostname:~$ ./bastion_connect.sh <ip>
 KEY_PATH env var is expected
+myuser@hostname:~$ echo $?
+5
+myuser@hostname:~$ export KEY_PATH=~/key.pem
+myuser@hostname:~$ ./bastion_connect.sh
 Please provide bastion IP address
 myuser@hostname:~$ echo $?
 5
@@ -288,7 +290,6 @@ ubuntu@<private-ip-host>: Permission denied (publickey).
 
 ```console
 ubuntu@<public-ip-host>:~$ ./ssh_keys_rotation.sh
-KEY_PATH env var is expected
 Please provide IP address
 ```
 
@@ -304,7 +305,7 @@ https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html
 
 ## TLS Handshake 
 
-![Alice-Bob-Eve](../.img/alice-bob-eve.png)
+![Alice-Bob-Eve](.img/alice-bob-eve.png)
 
 As you may know, the communication in HTTP protocol is insecure, and since Eve is listening on the channel between you (Alice) and the web server (Bob), you are required to create a secure channel.
 This is what HTTP does, using TLS protocol. The process of establishing a secure TLS connection involves several steps, known as TLS Handshake.
@@ -428,7 +429,7 @@ openssl verify -CAfile cert-ca-aws.pem cert.pem
 ```
 
 While `cert-ca-aws.pem` is a file belonging to the Certificate Authority (in our case Amazon Web Services) who issued and signed the server cert. 
-You can safely download it from **https://devops-feb23.s3.eu-north-1.amazonaws.com/cert-ca-aws.pem** (`wget`...).
+You can safely download it from using [this](tls_webserver/cert-ca-aws.pem) URL (`wget` in your solution script...).
 
 Upon a valid certificate validation, the following output will be printed to stdout:
 ```text

@@ -8,6 +8,7 @@ import sys
 
 # Generate self signed certificate by
 # openssl req -x509 -nodes -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 365
+# generate one for pair for bob, pair for eve. Use bob's cert as a dummy "ca" cert
 
 
 TEST = sys.argv[1] if len(sys.argv) > 1 else None

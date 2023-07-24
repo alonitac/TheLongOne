@@ -429,7 +429,7 @@ openssl verify -CAfile cert-ca-aws.pem cert.pem
 ```
 
 While `cert-ca-aws.pem` is a file belonging to the Certificate Authority (in our case Amazon Web Services) who issued and signed the server cert. 
-You can safely download it from using [this](tls_webserver/cert-ca-aws.pem) URL (`wget` in your solution script...).
+You can safely download it from using [this](tls_webserver/cert-ca-aws.pem?raw=1) URL (`wget` in your solution script...).
 
 Upon a valid certificate validation, the following output will be printed to stdout:
 ```text
@@ -472,7 +472,7 @@ The response for the above request would be in the form:
 }
 ```
 
-All you have to do now is to decrypt the sample message and verify that it's equal to the original sample message.
+All you have to do now is to decrypt the sample message (using `openssl enc -d -aes-256-cbc -salt .....`) and verify that it's equal to the original sample message.
 This will indicate that the server uses successfully the master-key.
 
 Please note that the `encryptedSampleMessage` is encoded in base64, before you decrypt it, encode it to binary, as following:
@@ -481,8 +481,6 @@ echo <encryptedSampleMessage-variable> | base64 -d > encSampleMsgReady.txt
 
 # file encSampleMsgReady.txt is ready now to be used in "openssl enc...." command 
 ```
-
-Recall the symmetric encryption demo the [networking and security](../tutorials/19_networking_security.md) tutorial, see how to decrypt a message.
 
 You should `exit` the program upon an invalid decryption with exit code `6`, and print informational message, e.g.:
 ```text
